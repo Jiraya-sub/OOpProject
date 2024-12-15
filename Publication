@@ -1,0 +1,70 @@
+class Publication{
+    protected String title;
+    protected double  price;
+    protected int copies;
+
+    public Publication(String title, double price, int copies){
+        this.title = title;
+        this.price = price;
+        this.copies = copies;
+    }
+
+    public double saleCopy(){
+        return copies * price;
+    }
+
+}
+
+class Book extends Publication{
+    private String author;
+
+    public Book(String title, double price, int copies, String author){
+        super(title, price, copies);
+        this.author = author;
+    }
+
+    public void orderedCopies(int orderCopies){
+        this.copies += orderCopies;
+        System.out.println(orderCopies + " OF the Book " + title + " Orderd Successfully.");
+    }
+
+    @Override
+    public String toString(){
+        return "Book" + title +", Author: " + author +", Price: " + price +", Copies: " + copies;
+
+    }
+}
+
+class Magazine extends Publication{
+    public Magazine(String title, double price, int copies){
+        super(title, price, copies);
+    }
+
+    public void orderQty(int orderCopies){
+        this.copies  += orderCopies;
+        System.out.println(orderCopies + " Of the Magazine "+ " ordered Successfully. ");
+    }
+
+    @Override
+    public String toString(){
+        return " Magazine " + title + " Price " + price + " Copies " + copies;
+    }
+}
+
+public class PublicationDemo{
+    public static void main(String[] args) {
+        Book B1 = new Book("XYZ", 100.0, 5, "ABC");
+        Magazine M1 = new Magazine("INDIA", 20, 100);
+
+        B1.orderedCopies(3);
+        M1.orderQty(50);
+
+        double totalScale = B1.saleCopy() + M1.saleCopy();
+
+        System.out.println("Publication Detials :\n");
+        System.out.println("Remaning Books : " + B1);
+        System.out.println("Remainng Magazine : " + M1);
+
+        System.out.println("Total Sale of Publication is : $"+totalScale);
+    }
+}
