@@ -1,0 +1,187 @@
+import java.util.*;
+import java.io.*;
+
+class Student implements Serializable { // Implement Serializable for file operations
+    private static final long serialVersionUID = 1L; // Versioning for serialized objects
+    private int studentId;
+    private String name;
+    private int roll_No;
+    private String student_class;
+    private double student_marks;
+    private String student_address;
+
+    public Student(int studentId, String name, int roll_No, String student_class, double student_marks, String student_address) {
+        this.studentId = studentId;
+        this.name = name;
+        this.roll_No = roll_No;
+        this.student_class = student_class;
+        this.student_marks = student_marks;
+        this.student_address = student_address;
+    }
+
+    public int getstudentId() {
+        return studentId;
+    }
+
+    public String getname() {
+        return name;
+    }
+
+    public int getroll_No() {
+        return roll_No;
+    }
+
+    public String getstudent_class() {
+        return student_class;
+    }
+
+    public double getstudent_marks() {
+        return student_marks;
+    }
+
+    public String getstudent_address() {
+        return student_address;
+    }
+
+    @Override
+    public String toString() {
+        return "Student [studentId=" + studentId + ", name=" + name + ", roll_No=" + roll_No +
+                ", student_class=" + student_class + ", student_marks=" + student_marks +
+                ", student_address=" + student_address + "]";
+    }
+}
+
+public class dataBase {
+    private static final String DATABASE_FILE = "student.dat";
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Student> students = loadDatabase(); // Load existing data if available
+
+        while (true) {
+            System.out.println("\n1. Add Student\n2. Display Database\n3. Search Record\n4. Delete Record\n5. Exit");
+            System.out.print("Enter your Choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    createDatabase(students, sc);
+                    break;
+
+                case 2:
+                    displayDatabase(students);
+                    break;
+
+                case 3:
+                    searchRecord(students, sc);
+                    break;
+
+                case 4:
+                    deleteRecord(students, sc);
+                    break;
+
+                case 5:
+                    saveDatabase(students);
+                    System.out.println("Exiting...");
+                    sc.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid Choice -- Please Try Again --");
+            }
+        }
+    }
+
+    private static void createDatabase(List<Student> students, Scanner sc) {
+        System.out.print("Enter Student Id: ");
+        int studentId = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter the Student Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter the Roll_No: ");
+        int roll_No = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Class: ");
+        String student_class = sc.nextLine();
+
+        System.out.print("Enter the Marks: ");
+        double student_marks = sc.nextDouble();
+        sc.nextLine();
+
+        System.out.print("Enter the Address: ");
+        String student_address = sc.nextLine();
+
+        students.add(new Student(studentId, name, roll_No, student_class, student_marks, student_address));
+        System.out.println("Student Record Added Successfully");
+    }
+
+    private static void displayDatabase(List<Student> students) {
+        if (students.isEmpty()) {
+            System.out.println("No Student Record Found.");
+        } else {
+            System.out.println("\nStudent Database:");
+            for (Student student : students) {
+                System.out.println(student);
+            }
+        }
+    }
+
+    private static void searchRecord(List<Student> students, Scanner sc) {
+        System.out.print("Enter Student Id to Search: ");
+        int studentId = sc.nextInt();
+        sc.nextLine();
+
+        for (Student student : students) {
+            if (student.getstudentId() == studentId) {
+                System.out.println("\nStudent Found:");
+                System.out.println(student);
+                return;
+            }
+        }
+
+        System.out.println("Student with ID " + studentId + " Not Found.");
+    }
+
+    private static void deleteRecord(List<Student> students, Scanner sc) {
+        System.out.print("Enter the Id You Want to Delete: ");
+        int studentId = sc.nextInt();
+        sc.nextLine();
+
+        Iterator<Student> iterator = students.iterator();
+        while (iterator.hasNext()) {
+            Student student = iterator.next();
+            if (student.getstudentId() == studentId) {
+                iterator.remove();
+                System.out.println("Student Record Deleted Successfully.");
+                return;
+            }
+        }
+
+        System.out.println("Student with ID " + studentId + " Not Found.");
+    }
+
+    private static void saveDatabase(List<Student> students) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DATABASE_FILE))) {
+            oos.writeObject(students);
+            System.out.println("Database Saved Successfully");
+        } catch (IOException e) {
+            System.out.println("An Error Occurred While Saving the Database: " + e.getMessage());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<Student> loadDatabase() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DATABASE_FILE))) {
+            return (List<Student>) ois.readObject();
+        } catch (FileNotFoundException e) {
+            return new ArrayList<>(); // No existing database
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("An Error Occurred While Loading the Database: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+}
