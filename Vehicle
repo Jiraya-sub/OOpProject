@@ -1,0 +1,146 @@
+import java.util.Scanner;
+
+interface Vehicle {
+    void Gear_change (int newGear);
+    void Speed_Up(int incraement);
+    void Apply_Breaks(int Decerment);    
+}
+
+class Bicycle implements Vehicle{
+    private int speed;
+    private int gear;
+
+    Bicycle(){
+        this.speed = 0;
+        this.gear = 1;
+    }
+
+    @Override
+    public void Gear_change(int newGear){
+        this.gear = newGear;
+        System.out.println("Bicycle Gear changes To : " + gear );
+    }
+
+    @Override
+    public void Speed_Up(int incraement){
+        this.speed += incraement;
+        System.out.println("Bicycle Speed is Increase to : " + speed + "km/h");    
+    }
+
+    @Override
+    public void Apply_Breaks  (int Decerment){
+        this.speed -= Decerment;
+        System.out.println("Bicycle Has Applied the Brakes Speed Reduced To : " + speed + "km/h");
+    }
+}
+
+class Bike implements Vehicle{
+    private int speed;
+    private int gear;
+
+    Bike(){
+        this.speed = 0;
+        this.gear = 1;
+    }
+
+    @Override
+    public void Gear_change(int newGear){
+        this.gear = newGear;
+        System.out.println("Bike Gear changes To : " + gear );
+    }
+
+    @Override
+    public void Speed_Up(int incraement){
+        this.speed += incraement;
+        System.out.println("Bike Speed is Increase to : " + speed + "km/h");    
+    }
+
+    @Override
+    public void Apply_Breaks  (int Decerment){
+        this.speed -= Decerment;
+        System.out.println("Bike Has Applied the Brakes Speed Rudeuced to : " + speed + "km/h");
+    }
+}
+
+class Car implements Vehicle{
+    private int speed;
+    private int gear;
+
+    Car(){
+        this.speed = 0;
+        this.gear = 1;
+    }
+
+    @Override
+    public void Gear_change(int newGear){
+        this.gear = newGear;
+        System.out.println("Car Gear changes To : " + gear );
+    }
+
+    @Override
+    public void Speed_Up(int incraement){
+        this.speed += incraement;
+        System.out.println("Car Speed is Increase to : " + speed + "km/h");    
+    }
+
+    @Override
+    public void Apply_Breaks  (int Decerment){
+        this.speed -= Decerment;
+        System.out.println("Car Has Applied the Brakes Speed Rudeuced to : " + speed + "km/h");
+    }
+}
+
+public class VehicleInterfaceTest {
+
+    public static void main(String[] args){
+
+        Scanner scanner = new Scanner(System.in);
+        Vehicle bicycle = new Bicycle();
+        Vehicle bike = new Bike();
+        Vehicle car = new Car();
+
+        System.out.println("Bicycle : ");
+            System.out.println("Enter the New Gear : " );
+            int gear = scanner.nextInt();
+            bicycle.Gear_change(gear);
+
+            System.out.println("Increment in Speed : ");
+            int incraement = scanner.nextInt();
+            bicycle.Speed_Up(incraement);
+
+            System.out.println("Decrement in Speed : ");
+            int Decrement = scanner.nextInt();
+            bicycle.Apply_Breaks(Decrement);
+    
+
+        System.out.println("Bike : ");
+            System.out.println("Enter the New Gear : " );
+             gear = scanner.nextInt();
+            bike.Gear_change(gear);
+
+            System.out.println("Increment in Speed : ");
+             incraement = scanner.nextInt();
+            bike.Speed_Up(incraement);
+
+            System.out.println("Decrement in Speed : ");
+             Decrement = scanner.nextInt();
+            bike.Apply_Breaks(Decrement);
+
+        System.out.println("Car : ");
+            System.out.println("Enter the New Gear : " );
+             gear = scanner.nextInt();
+            car.Gear_change(gear);
+
+            System.out.println("Increment in Speed : ");
+             incraement = scanner.nextInt();
+            car.Speed_Up(incraement);
+
+            System.out.println("Decrement in Speed : ");
+             Decrement = scanner.nextInt();
+            car.Apply_Breaks(Decrement);
+
+            scanner.close();
+    }
+
+
+}
