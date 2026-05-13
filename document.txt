@@ -1,0 +1,513 @@
+------------------------------------------Practical 1--------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Admin Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar p-3">
+
+                <h3 class="text-white mb-4">Admin Panel</h3>
+
+                <a href="#">Dashboard</a>
+                <a href="#">Students</a>
+                <a href="#">Courses</a>
+                <a href="#">Exams</a>
+                <a href="#">Results</a>
+
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-10 main p-4">
+
+                <h2>College Dashboard</h2>
+
+                <div class="row mt-4">
+
+                    <!-- Card 1 -->
+                    <div class="col-md-3">
+                        <div class="card p-3 text-center">
+                            <h5>Total Students</h5>
+                            <h2>1200</h2>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="col-md-3">
+                        <div class="card p-3 text-center">
+                            <h5>Course Sales</h5>
+                            <h2>$24K</h2>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="col-md-3">
+                        <div class="card p-3 text-center">
+                            <h5>Total Exams</h5>
+                            <h2>30</h2>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="col-md-3">
+                        <div class="card p-3 text-center">
+                            <h5>Pass Rate</h5>
+                            <h2>88%</h2>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+css: 
+
+body{
+    background:#f2f2f2;
+}
+
+/* Sidebar */
+.sidebar{
+    background:rgb(33, 198, 179);
+    height:100vh;
+}
+
+/* Sidebar Links */
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    margin:15px 0;
+    font-size:18px;
+}
+
+/* Cards */
+.card{
+    border:none;
+    border-radius:10px;
+    box-shadow:0 0 10px lightgray;
+}
+
+--------------------------------------AJAX---------------------------------------------
+
+Register : 
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Registration</title>
+</head>
+
+<body>
+
+    <!-- Heading -->
+    <h2>User Registration Form</h2>
+
+    <!-- Registration Form -->
+    <form id="form">
+
+        <!-- Name Input -->
+        <input type="text" id="name" placeholder="Enter Name" required>
+        <br><br>
+
+        <!-- Email Input -->
+        <input type="email" id="email" placeholder="Enter Email" required>
+        <br><br>
+
+        <!-- Password Input -->
+        <input type="password" id="password" placeholder="Enter Password" required>
+        <br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Register</button>
+
+    </form>
+
+<script>
+
+// Form submit event
+document.getElementById("form").addEventListener("submit", function(e){
+
+    // Stop page refresh
+    e.preventDefault();
+
+    // Get input values
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    // Create user object
+    let user = {
+        name: name,
+        email: email,
+        password: password
+    };
+
+    // Get old users data from localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Add new user
+    users.push(user);
+
+    // Save updated data back to localStorage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // AJAX Request using fetch()
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+
+        // Request method
+        method: "POST",
+
+        // Data format
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        // Send user data
+        body: JSON.stringify(user)
+
+    })
+
+    // Convert response to JSON
+    .then(response => response.json())
+
+    // Success message
+    .then(data => {
+
+        alert("User Registered Successfully");
+
+        // Open list page
+        window.location.href = "list.html";
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
+
+--- List ---
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User List</title>
+</head>
+
+<body>
+
+    <!-- Heading -->
+    <h2>Registered Users</h2>
+
+    <!-- User Table -->
+    <table border="1" cellpadding="10">
+
+        <!-- Table Heading -->
+        <thead>
+
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+            </tr>
+
+        </thead>
+
+        <!-- Table Data -->
+        <tbody id="tableBody">
+
+        </tbody>
+
+    </table>
+
+<script>
+
+    // Get users data from localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Select table body
+    let table = document.getElementById("tableBody");
+
+    // Loop through all users
+    users.forEach(user => {
+
+        // Create table row
+        let row = `
+        
+        <tr>
+
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.password}</td>
+
+        </tr>
+
+        `;
+
+        // Add row inside table
+        table.innerHTML += row;
+
+    });
+
+</script>
+
+</body>
+</html>
+
+---------------------------------------------JQUERY----------------------------------------
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>My Mobile Site</title>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <!-- jQuery Mobile CSS & JS -->
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+
+<body>
+
+  <!-- Page -->
+  <div data-role="page" id="home">
+
+    <!-- Header -->
+    <div data-role="header">
+      <h1>My Mobile Site</h1>
+    </div>
+
+    <!-- Content -->
+    <div data-role="main" class="ui-content">
+      <p>Hello! This is a mobile website 🚀</p>
+
+      <a href="#page2" class="ui-btn ui-corner-all">Go to Page 2</a>
+    </div>
+
+    <!-- Footer -->
+    <div data-role="footer">
+      <h4>Footer</h4>
+    </div>
+
+  </div>
+
+  <!-- Second Page -->
+  <div data-role="page" id="page2">
+
+    <div data-role="header">
+      <h1>Page 2</h1>
+    </div>
+
+    <div data-role="main" class="ui-content">
+      <p>Welcome to second page!</p>
+      <a href="#home" class="ui-btn">Back</a>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
+
+----------------------------------------------DOCKER---------------------------------------
+
+mkdir pythonapp
+cd pythonapp
+nano app.py
+{
+	name = ajit
+	print ("Welcome", name)
+}
+
+nano Dockerfile{
+	FORM python:3
+	COPY . .
+	CMD ["python", "app.py"]
+}
+docker build -t mypyhtonapp
+docker images 
+docker run mypythonapp
+docker run -it mypythonapp bash
+ls
+
+
+--------------------------------------------GITHUB----------------------------------------
+git config --global user.name ""
+git config --global user.email ""
+
+git init
+git add .
+git commit -m ""
+git remote add origin ""
+git branch -M main
+git push -u origin main
+
+git remote set-url origin https://TOKEN@github.com/Jiraya-sub/myproject.git
+
+Remove-Item -Recurse -Force .git 
+
+APP>JS ------
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+    res.write("Hello from Node.js App on AWS 🚀");
+    res.end();
+});
+
+server.listen(5500, () => {
+    console.log("Server running on port 5500");
+});
+
+package.json --------------------
+{
+    "name": "node-app",
+    "version": "1.0.0",
+    "main": "app.js"
+}
+
+--------------------------------------------EC2COMMAND------------------------------------
+
+ssh -I key.pem ec2-user@ipv4
+sudo yum update -y
+sudo yum install nodejs npm -y
+exit 
+scp -I key.pem app.js package.json ec2-user@ip:/home/ec2-user/
+ssh -I key.pem ec2-user@ipv4
+ls
+node app.js
+
+-----------------
+
+ssh -I key.pem ubuntu@ip
+sudo apt update
+sudo apt install apache2 -y
+sudo systemctl start apache2
+sudo systemctl enable apache2
+
+exit
+
+scp -r -I key.pem upload ubuntu@ipv4:/home/ubuntu/
+
+ssh -I key.pem ubuntu@ip
+
+sudo cp -r /home/ubuntu/upload/ * /var/www/html/
+
+sudo chmod -R 755 /var/www/html/
+
+--------------------------------------------STUDENTAPI----------------------------------
+
+server.js
+
+// ========================
+//  IMPORTS
+// ========================
+const express = require("express");
+const mongoose = require("mongoose");
+
+const app = express();
+app.use(express.json());
+
+
+// ========================
+//  DATABASE CONNECTION
+// ========================
+mongoose.connect("mongodb+srv://muzandemon106_db_user:0NNEF2qreZq3pEmz@cluster0.dek3cve.mongodb.net/Student_data")
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err) => console.log("DB Error:", err));
+
+
+// ========================
+//  STUDENT MODEL
+// ========================
+const Student = mongoose.model("Student_data", {
+    name: String,
+    age: Number,
+    email: String,
+    course: String
+});
+
+
+// ========================
+//  ROUTES
+// ========================
+
+// Get all students
+app.get("/students", async (req, res) => {
+    const students = await Student.find();
+    res.json(students);
+});
+
+// Get one student by name
+app.get("/students/:name", async (req, res) => {
+    const student = await Student.find({ name: req.params.name });
+    res.json(student);
+});
+
+// Add a new student
+app.post("/students", async (req, res) => {
+    const student = new Student(req.body);
+    await student.save();
+    res.json(student);
+});
+
+// Update student by name
+app.put("/students/:name", async (req, res) => {
+    const updated = await Student.findOneAndUpdate(
+        { name: req.params.name },
+        req.body,
+        { new: true }
+    );
+    res.json(updated);
+});
+
+// Delete student by name
+app.delete("/students/:name", async (req, res) => {
+    const result = await Student.deleteOne({ name: req.params.name });
+    res.json(result);
+});
+
+
+// ========================
+//  START SERVER
+// ========================
+app.listen(3000, () => {
+    console.log("Server running on http://localhost:3000");
+});
+
+
+----------------------------------------APACHESERVER----------------------------------
+
+sudo su 
+yum install httpd -y
+systemctl stauts httpd
+systemctl start httpd
